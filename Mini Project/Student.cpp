@@ -129,8 +129,20 @@ void Student ::Insert()
     cout << "\n-------------------------------------------------------------------------------------------------------" << endl;
     cout << "------------------------------------- Add Student Data ---------------------------------------------" << endl;
     cin.ignore();
+name:
     cout << "\n\t\t\tEnter Name: ";
     getline(cin, name);
+    int i = 0;
+    while (name[i] != '\0')
+    {
+        if (name[i] < 'A' || name[i] > 'z')
+        {
+            cout << "\t\t\t# Please enter valid name..." << endl;
+            goto name;
+        }
+        i++;
+    }
+    cout << "\t\t\t# Your name is valid..." << endl;
     cout << "\t\t\tEnter Roll No.: ";
     cin >> roll_no;
     cout << "\t\t\tEnter Course: ";
@@ -260,8 +272,20 @@ void Student ::Modify()
             else
             {
                 cin.ignore();
+            name:
                 cout << "\n\t\t\tEnter Name: ";
                 getline(cin, name);
+                int i = 0;
+                while (name[i] != '\0')
+                {
+                    if (name[i] < 'A' || name[i] > 'z')
+                    {
+                        cout << "\t\t\t# Please enter valid name..." << endl;
+                        goto name;
+                    }
+                    i++;
+                }
+                cout << "\t\t\t# Your name is valid..." << endl;
                 cout << "\t\t\tEnter Roll No: ";
                 cin >> roll_no;
                 cout << "\t\t\tEnter Course: ";
