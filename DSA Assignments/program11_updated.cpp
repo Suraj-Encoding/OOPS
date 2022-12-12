@@ -1,6 +1,7 @@
 // # Assignment-11 -> Ticket Booking System
 // # Concept Used: Doubly Linked List
 #include <iostream>
+#include <math.h>
 using namespace std;
 
 // Node
@@ -18,7 +19,7 @@ public:
 class cinemax
 {
 public:
-    node *head[15], *tail[15], *temp;
+    node *head[15], *tail[15], *temp, *end;
     cinemax()
     {
         for (int i = 0; i < 15; i++)
@@ -116,6 +117,7 @@ void cinemax::book()
 {
     int x;
     string y;
+    int s1, s2;
     cout << "\n\n# Book Seat: " << endl;
 label:
     cout << "Enter seat number to be booked: ";
@@ -124,25 +126,47 @@ label:
     cin >> y;
     if (x < 1 || x > 150)
     {
-        cout << "\n* Enter correct seat number to book (1-70)\n";
+        cout << "\n* Enter correct seat number to book (1-150)\n";
         goto label;
     }
     int pos = x / 10;
     if (x % 10 == 0)
         pos = pos - 1;
-    temp = head[pos];
-    while (temp->seat != x)
-    {
-        temp = temp->next;
-    }
 
-    if (temp->status == 1)
-        cout << "\n* Seat is already booked!\n";
+    // Selection of tail or head for traversal
+    s1 = x - head[pos]->seat;
+    s2 = x - tail[pos]->seat;
+    if (abs(s1) < abs(s2))
+    {
+        temp = head[pos];
+        while (temp->seat != x)
+        {
+            temp = temp->next;
+        }
+        if (temp->status == 1)
+            cout << "\n* Seat is already booked!\n";
+        else
+        {
+            temp->status = 1;
+            temp->id = y;
+            cout << "\n# Seat " << x << " is booked!" << endl;
+        }
+    }
     else
     {
-        temp->status = 1;
-        temp->id = y;
-        cout << "\n# Seat " << x << " is booked!" << endl;
+        end = tail[pos];
+        while (end->seat != x)
+        {
+            end = end->prev;
+        }
+        if (end->status == 1)
+            cout << "\n* Seat is already booked!\n";
+        else
+        {
+            end->status = 1;
+            end->id = y;
+            cout << "\n# Seat " << x << " is booked!" << endl;
+        }
     }
 }
 
@@ -150,6 +174,7 @@ void cinemax::cancel()
 {
     int x;
     string y;
+    int s1, s2;
     cout << "\n\n# Cancel Seat: " << endl;
 label:
     cout << "\nEnter seat number to cancel booking: ";
@@ -164,26 +189,53 @@ label:
     int pos = x / 10;
     if (x % 10 == 0)
         pos = pos - 1;
-
-    temp = head[pos];
-    while (temp->seat != x)
+    s1 = x - head[pos]->seat;
+    s2 = x - tail[pos]->seat;
+    if (abs(s1) < abs(s2))
     {
-        temp = temp->next;
-    }
+        temp = head[pos];
+        while (temp->seat != x)
+        {
+            temp = temp->next;
+        }
 
-    if (temp->status == 0)
-    {
-        cout << "\n* Seat is not booked yet..!\n";
+        if (temp->status == 0)
+        {
+            cout << "\n* Seat is not booked yet..!\n";
+        }
+        else
+        {
+            if (temp->id == y)
+            {
+                temp->status = 0;
+                cout << "\n* Seat is Cancelled..!\n";
+            }
+            else
+                cout << "\n* Wrong User ID !!! Seat cannot be cancelled!!!\n";
+        }
     }
     else
     {
-        if (temp->id == y)
+        end = tail[pos];
+        while (end->seat != x)
         {
-            temp->status = 0;
-            cout << "\n* Seat is Cancelled..!\n";
+            end = end->prev;
+        }
+
+        if (end->status == 0)
+        {
+            cout << "\n* Seat is not booked yet..!\n";
         }
         else
-            cout << "\n* Wrong User ID !!! Seat cannot be cancelled!!!\n";
+        {
+            if (end->id == y)
+            {
+                end->status = 0;
+                cout << "\n* Seat is Cancelled..!\n";
+            }
+            else
+                cout << "\n* Wrong User ID !!! Seat cannot be cancelled!!!\n";
+        }
     }
 }
 
@@ -214,9 +266,9 @@ void cinemax::Available()
                     cout << "|_A_| ";
 
                 else if (temp->status == 1)
-                     cout << "|___| ";
+                    cout << "|___| ";
 
-                    count++;
+                count++;
                 flag = 0;
                 if (count % 10 == 0)
                 {
