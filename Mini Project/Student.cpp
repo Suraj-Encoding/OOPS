@@ -143,8 +143,20 @@ name:
         i++;
     }
     cout << "\t\t\t# Your name is valid..." << endl;
+roll:
     cout << "\t\t\tEnter Roll No.: ";
     cin >> roll_no;
+    i = 0;
+    while (roll_no[i] != '\0')
+    {
+        if (roll_no[i] < '0' || roll_no[i] > '9')
+        {
+            cout << "\t\t\t# Please enter valid Roll No..." << endl;
+            goto roll;
+        }
+        i++;
+    }
+    cout << "\t\t\t# Your Roll No. is valid..." << endl;
     cout << "\t\t\tEnter Course: ";
     cin >> course;
 email:
@@ -457,7 +469,7 @@ void Student ::Delete()
     }
 }
 
-// Main Function
+// # Main Function
 int main()
 {
     Student stud;
