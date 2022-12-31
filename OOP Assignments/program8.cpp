@@ -5,14 +5,17 @@
 #include <fstream>
 using namespace std;
 
-// # Employee Class
-class Employee
+// # Structure
+struct employee
 {
-private:
     string name, age, dept, post;
     int id;
     long long int salary;
+};
 
+// # Employee Class
+class Employee
+{
 public:
     // Member Functions
     void Menu();
@@ -98,23 +101,24 @@ void Employee ::Insert()
 {
     // system("cls");
     fstream file;
+    employee em;
     cout << "\n-------------------------------------------------------------------------------------------------------" << endl;
     cout << "------------------------------------- Add Employee Data ---------------------------------------------" << endl;
     cin.ignore();
     cout << "\n\t\t\tEnter Name: ";
-    getline(cin, name);
+    getline(cin, em.name);
     cout << "\t\t\tEnter Age: ";
-    cin >> age;
+    cin >> em.age;
     cout << "\t\t\tEnter Department: ";
-    cin >> dept;
+    cin >> em.dept;
     cout << "\t\t\tEnter Post: ";
-    cin >> post;
+    cin >> em.post;
     cout << "\t\t\tEnter Id: ";
-    cin >> id;
+    cin >> em.id;
     cout << "\t\t\tEnter Salary: ";
-    cin >> salary;
-    file.open("Employee.bin", ios::binary | ios::app | ios::out);
-    file << " \t" << name << "\t " << age << "\t " << dept << "\t " << post << "\t " << id << "\t " << salary << "\n";
+    cin >> em.salary;
+    file.open("Employee.txt", ios::binary | ios::app | ios::out);
+    file.write((char *)&em, sizeof(em));
     file.close();
 }
 
@@ -122,10 +126,11 @@ void Employee ::Insert()
 void Employee ::Display()
 {
     fstream file;
+    employee em;
     int total = 1;
     cout << "\n-------------------------------------------------------------------------------------------------------" << endl;
     cout << "------------------------------------- Employee Record Table --------------------------------------------" << endl;
-    file.open("Employee.bin", ios::in);
+    file.open("Employee.txt", ios::in);
     if (!file)
     {
         cout << "\n\t\t\t# Data Is Not Present...\n"
@@ -135,7 +140,7 @@ void Employee ::Display()
     else
     {
         int i = 1;
-        file >> name >> age >> dept >> post >> id >> salary;
+        file.read((char *)&em, sizeof(em));
         while (!file.eof())
         {
             if (i == 1)
@@ -153,14 +158,14 @@ void Employee ::Display()
             }
             cout << "\n-------------------------------------------------------------------------------------------------------" << endl;
             cout << left << setw(10) << i;
-            cout << left << setw(13) << name;
-            cout << left << setw(10) << age;
-            cout << left << setw(10) << dept;
-            cout << left << setw(13) << post;
-            cout << left << setw(10) << id;
-            cout << left << setw(10) << salary;
+            cout << left << setw(13) << em.name;
+            cout << left << setw(10) << em.age;
+            cout << left << setw(10) << em.dept;
+            cout << left << setw(13) << em.post;
+            cout << left << setw(10) << em.id;
+            cout << left << setw(10) << em.salary;
             cout << endl;
-            file >> name >> age >> dept >> post >> id >> salary;
+            file.read((char *)&em, sizeof(em));
             i++;
         }
         cout << "\n-------------------------------------------------------------------------------------------------------" << endl;
@@ -172,11 +177,12 @@ void Employee ::Display()
 void Employee ::Modify()
 {
     fstream file, file1;
+    employee em;
     int ID;
     int found = 0;
     cout << "\n-------------------------------------------------------------------------------------------------------" << endl;
     cout << "------------------------------------- Modify Employee Record ------------------------------------------" << endl;
-    file.open("Employee.bin", ios::in);
+    file.open("Employee.txt", ios::in);
     if (!file)
     {
         cout << "\n\t\t\t# Data Not Found...\n"
@@ -187,31 +193,31 @@ void Employee ::Modify()
     {
         cout << "\nEnter Id of Employee which you want to Modify: ";
         cin >> ID;
-        file1.open("NewRecord.bin", ios::binary | ios::app | ios::out);
-        file >> name >> age >> dept >> post >> id >> salary;
+        file1.open("NewRecord.txt", ios::binary | ios::app | ios::out);
+        file.read((char *)&em, sizeof(em));
         while (!file.eof())
         {
-            if (ID != id)
-                file1 << "\t" << name << " \t" << age << "\t " << dept << " \t" << post << " \t" << id << "\t " << salary << "\n";
+            if (ID != em.id)
+                file1.write((char *)&em, sizeof(em));
             else
             {
                 cin.ignore();
                 cout << "\n\t\t\tEnter Name: ";
-                getline(cin, name);
+                getline(cin, em.name);
                 cout << "\t\t\tEnter Age: ";
-                cin >> age;
+                cin >> em.age;
                 cout << "\t\t\tEnter Department: ";
-                cin >> dept;
+                cin >> em.dept;
                 cout << "\t\t\tEnter Post: ";
-                cin >> post;
+                cin >> em.post;
                 cout << "\t\t\tEnter ID: ";
-                cin >> id;
+                cin >> em.id;
                 cout << "\t\t\tEnter Salary: ";
-                cin >> salary;
-                file1 << " \t" << name << "\t" << age << "\t" << dept << "\t" << post << "\t" << id << "\t" << salary << "\n";
+                cin >> em.salary;
+                file1.write((char *)&em, sizeof(em));
                 found++;
             }
-            file >> name >> age >> dept >> post >> id >> salary;
+            file.read((char *)&em, sizeof(em));
         }
         if (found == 0)
         {
@@ -219,8 +225,8 @@ void Employee ::Modify()
         }
         file1.close();
         file.close();
-        remove("Employee.bin");
-        rename("NewRecord.bin", "Employee.bin");
+        remove("Employee.txt");
+        rename("NewRecord.txt", "Employee.txt");
     }
 }
 
@@ -228,8 +234,9 @@ void Employee ::Modify()
 void Employee ::Search()
 {
     fstream file;
+    employee em;
     int found = 0;
-    file.open("Employee.bin", ios::in);
+    file.open("Employee.txt", ios::in);
     if (!file)
     {
         cout << "\n-------------------------------------------------------------------------------------------------------" << endl;
@@ -244,10 +251,10 @@ void Employee ::Search()
         cout << "------------------------------------- Search Employee Record --------------------------------------------" << endl;
         cout << "\nEnter Id of Employee which you want to search: ";
         cin >> ID;
-        file >> name >> age >> dept >> post >> id >> salary;
+        file.read((char *)&em, sizeof(em));
         while (!file.eof())
         {
-            if (ID == id)
+            if (ID == em.id)
             {
 
                 cout << endl;
@@ -261,19 +268,19 @@ void Employee ::Search()
                 cout << left << setw(10) << "Salary";
                 cout << endl;
                 cout << "\n-------------------------------------------------------------------------------------------------------" << endl;
-                cout << left << setw(10) << id;
-                cout << left << setw(13) << name;
-                cout << left << setw(10) << age;
-                cout << left << setw(10) << dept;
-                cout << left << setw(13) << post;
-                cout << left << setw(10) << id;
-                cout << left << setw(10) << salary;
+                cout << left << setw(10) << em.id;
+                cout << left << setw(13) << em.name;
+                cout << left << setw(10) << em.age;
+                cout << left << setw(10) << em.dept;
+                cout << left << setw(13) << em.post;
+                cout << left << setw(10) << em.id;
+                cout << left << setw(10) << em.salary;
                 cout << endl;
-                file >> name >> age >> dept >> post >> id >> salary;
+                file.read((char *)&em, sizeof(em));
                 cout << "\n-------------------------------------------------------------------------------------------------------" << endl;
                 found++;
             }
-            file >> name >> age >> dept >> post >> id >> salary;
+            file.read((char *)&em, sizeof(em));
         }
         if (found == 0)
         {
@@ -289,11 +296,12 @@ void Employee ::Search()
 void Employee ::Delete()
 {
     fstream file, file1;
+    employee em;
     int found = 0;
     int ID;
     cout << "\n-------------------------------------------------------------------------------------------------------" << endl;
     cout << "------------------------------------- Delete Employee Record ------------------------------------------" << endl;
-    file.open("Employee.bin", ios::in);
+    file.open("Employee.txt", ios::in);
     if (!file)
     {
         cout << "\n\t\t\t# Data Not Found...\n"
@@ -304,13 +312,13 @@ void Employee ::Delete()
     {
         cout << "\nEnter Id of Employee whose data you want delete: ";
         cin >> ID;
-        file1.open("NewRecord.bin", ios::binary | ios::app | ios::out);
-        file >> name >> age >> dept >> post >> id >> salary;
+        file1.open("NewRecord.txt", ios::binary | ios::app | ios::out);
+        file.read((char *)&em, sizeof(em));
         while (!file.eof())
         {
-            if (ID != id)
+            if (ID != em.id)
             {
-                file1 << "\t" << name << "\t" << age << " \t" << dept << " \t" << post << "\t " << id << " \t" << salary << "\n";
+                file1.write((char *)&em, sizeof(em));
             }
             else
             {
@@ -318,7 +326,7 @@ void Employee ::Delete()
                 cout << "\n\t\t\t# Successfully Delete Data...\n"
                      << endl;
             }
-            file >> name >> age >> dept >> post >> id >> salary;
+            file.read((char *)&em, sizeof(em));
         }
         if (found == 0)
         {
@@ -328,8 +336,8 @@ void Employee ::Delete()
         }
         file1.close();
         file.close();
-        remove("Employee.bin");
-        rename("NewRecord.bin", "Employee.bin");
+        remove("Employee.txt");
+        rename("NewRecord.txt", "Employee.txt");
     }
 }
 
