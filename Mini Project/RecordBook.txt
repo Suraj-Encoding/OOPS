@@ -1,0 +1,4 @@
+	Suraj	44 	Computer 	suraj@gmail.com	 7447257170 	Pimpri
+	Pratiksha	45 	Computer 	pratiksha@gmail.com	 1234567890 	Akurdi
+	Yogeshwari	48 	IT 	yogi@gmail.com	 9087654321 	Ravet
+	Om	58 	Computer 	om@gmail.com	 9998887770 	Pune
