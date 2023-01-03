@@ -5,6 +5,7 @@
         1. A44 -> Suraj Dalvi
         2. A45 -> Pratiksha Darekar
         3. A48 -> Yogeshwari Desai
+        4. A58 -> Om Dhami
 
     # Info:
         -  Branch: Computer
@@ -55,10 +56,8 @@ bool Emailcheck(string email)
 void Student ::Menu()
 {
     // Menu driven program
-
     int choice;
     char x;
-    // system("cls");  // * clear screen
     do
     {
         // Menu
@@ -124,7 +123,6 @@ void Student ::Menu()
 // # Insert Data -> Add Student Data
 void Student ::Insert()
 {
-    // system("cls");
     fstream file;
     cout << "\n-------------------------------------------------------------------------------------------------------" << endl;
     cout << "------------------------------------- Add Student Data ---------------------------------------------" << endl;
@@ -207,7 +205,6 @@ contact:
 // # Display Record -> Display Student Data
 void Student ::Display()
 {
-    // system("cls");
     fstream file;
     int total = 1;
     cout << "\n-------------------------------------------------------------------------------------------------------" << endl;
@@ -258,7 +255,6 @@ void Student ::Display()
 // # Modify Record ->  Modify Student Data
 void Student ::Modify()
 {
-    // system("cls");
     fstream file, file1;
     string rollno;
     int found = 0;
@@ -361,7 +357,6 @@ void Student ::Modify()
 // # Search Record -> Search Student Data
 void Student ::Search()
 {
-    // system("cls");
     fstream file;
     int found = 0;
     file.open("RecordBook.txt", ios::in);
@@ -423,7 +418,6 @@ void Student ::Search()
 // # Delete Record -> Delete Student Data
 void Student ::Delete()
 {
-    // system("cls");
     fstream file, file1;
     int found = 0;
     string roll;
