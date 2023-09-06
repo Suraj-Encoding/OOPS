@@ -11,7 +11,6 @@ int main()
     cout << "\n# Frequency Count #\n\n";
     cout << "* Enter number of elements in an array: ";
     cin >> n;
-    cout<<n;
 
     int *arr = new int[n];
     
